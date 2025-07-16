@@ -7,3 +7,4 @@
 # Ignore all tfplan.out and tfplan.txt files (at any level)
 **/tfplan.out
 **/tfplan.txt
+
