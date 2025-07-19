@@ -18,7 +18,7 @@ output "db_subnet_group_name" {
   description = "The name of the database subnet group"
   value       = module.eks-vpc.db_subnet_group_name
 }
-output "cluster_name" {
-  description = "The name of the EKS cluster"
-  value       = module.eks_cluster.cluster_name
-}
+# output "cluster_name" {
+#   description = "The name of the EKS cluster"
+#   value       = module.eks_cluster.cluster_name
+# }

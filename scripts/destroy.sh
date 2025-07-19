@@ -42,7 +42,8 @@ read CONFIRM
 
 if [ "$CONFIRM" = "yes" ]; then
   echo "🚀 Destroy Infra ..."
-  terraform destroy -var-file=../env/$ENV/main.tfvars
+  terraform destroy -var-file=../env/$ENV/main.tfvars -auto-approve
+  echo "✅ Infrastructure destroyed successfully."
 else
   echo "❌ destroy cancelled."
   exit 0

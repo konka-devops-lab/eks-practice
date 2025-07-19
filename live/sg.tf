@@ -49,8 +49,8 @@ resource "aws_security_group_rule" "controlplane_nodegroup" {
   description              = "Allow traffic from control plane to node group"
   type                     = "ingress"
   from_port                = 0
-  to_port                  = 0
-  protocol                 = "tcp"
+  to_port                  = 65535
+  protocol                 = "-1"
   source_security_group_id = module.control_plane.sg_id
   security_group_id        = module.node_group.sg_id
 }
@@ -58,20 +58,20 @@ resource "aws_security_group_rule" "nodegroup_controlplane" {
   description              = "Allow traffic from node group to control plane"
   type                     = "ingress"
   from_port                = 0
-  to_port                  = 0
-  protocol                 = "tcp"
+  to_port                  = 65535
+  protocol                 = "-1"
   source_security_group_id = module.node_group.sg_id
   security_group_id        = module.control_plane.sg_id
 }
 
 resource "aws_security_group_rule" "nodegroup_itself" {
-  description              = "Allow traffic from node group to itself"
-  type                     = "ingress"
-  from_port                = 0
-  to_port                  = 0
-  protocol                 = "tcp"
-  source_security_group_id = module.node_group.sg_id
-  security_group_id        = module.node_group.sg_id
+  description       = "Allow traffic from node group to itself"
+  type              = "ingress"
+  from_port         = 0
+  to_port           = 65535
+  protocol          = "-1"
+  cidr_blocks       = [var.vpc["vpc_cidr"]]
+  security_group_id = module.node_group.sg_id
 }
 resource "aws_security_group_rule" "alb_nodegroup" {
   description              = "Allow traffic from ALB to node group"

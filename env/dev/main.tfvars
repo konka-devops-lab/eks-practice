@@ -16,7 +16,7 @@ vpc = {
   public_subnet_cidr  = ["172.17.0.0/20", "172.17.16.0/20"]
   private_subnet_cidr = ["172.17.32.0/20", "172.17.48.0/20"]
   db_subnet_cidr      = ["172.17.64.0/20", "172.17.80.0/20"]
-  enable_nat          = false
+  enable_nat          = true
 }
 
 sg = {
@@ -36,4 +36,20 @@ eks = {
   endpoint_private_access                     = true
   endpoint_public_access                      = true
   public_access_cidrs                         = ["0.0.0.0/0"]
+  node_groups = {
+    ugl = {
+      instance_type = ["t3a.medium"]
+      capacity_type = "ON_DEMAND"
+      desired_size  = 2
+      max_size      = 3
+      min_size      = 1
+    }
+  }
+
+  addons = {
+    vpc-cni = "v1.19.6-eksbuild.7"
+    metrics-server = "v0.8.0-eksbuild.1"
+    eks-pod-identity-agent = "v1.3.8-eksbuild.2"
+    aws-ebs-csi-driver = "v1.45.0-eksbuild.2"
+  }
 }

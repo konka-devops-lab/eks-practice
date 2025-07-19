@@ -1,3 +1,4 @@
+# Common Variables for EKS Module
 variable "environment" {
   description = "The environment for the VPC (e.g., dev, staging, prod)"
   type        = string
@@ -12,6 +13,7 @@ variable "common_tags" {
   default     = {}
 }
 
+# Variables for EKS Cluster
 variable "bootstrap_cluster_creator_admin_permissions" {
   description = "Enable admin permissions for the bootstrap cluster creator"
   type        = bool
@@ -41,3 +43,9 @@ variable "public_access_cidrs" {
     type        = list(string)
 }
 
+# Launch Template Variables
+
+variable "node_groups" {}
+variable "node_group_security_group_ids" {}
+variable "node_subnet_ids" {}
+variable "addons" {}
