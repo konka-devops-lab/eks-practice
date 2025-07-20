@@ -165,3 +165,19 @@ module addons {
   addon_name = each.key
   addon_version = each.value
 }
+
+module "eks_iam_access" {
+  depends_on = [aws_eks_cluster.example]
+  source     = "./access_entry"
+  for_each   = var.eks_iam_access
+
+  cluster_name      = aws_eks_cluster.example.name
+  principal_arn     = each.value["principal_arn"]
+  policy_arn        = each.value["policy_arn"]
+  access_scope_type = lookup(each.value, "access_scope_type", "cluster")
+  kubernetes_groups = lookup(each.value, "kubernetes_groups", [])
+
+  namespaces = lookup(each.value, "access_scope_type", "") == "namespace" ? lookup(each.value, "namespaces", []) : []
+}
+# map and object if it is a map each.value["access_scope_type"] == "namespace" ? try(each.value["namespaces"], []) : []
+# If it is a object each.value.access_scope_type == "namespace" ? try(each.value.namespaces, []) : []

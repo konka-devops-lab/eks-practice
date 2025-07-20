@@ -28,4 +28,5 @@ module "eks_cluster" {
   node_group_security_group_ids               = [module.node_group.sg_id]
   node_subnet_ids                             = module.eks-vpc.private_subnet_ids
   addons                                      = var.eks["addons"]
+  eks_iam_access                              = var.eks["eks_iam_access"]
 }

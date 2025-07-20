@@ -52,4 +52,14 @@ eks = {
     eks-pod-identity-agent = "v1.3.8-eksbuild.2"
     aws-ebs-csi-driver = "v1.45.0-eksbuild.2"
   }
+
+  eks_iam_access = {
+    admin = {
+      principal_arn     = "arn:aws:iam::522814728660:root"
+      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
+      kubernetes_groups = []
+      access_scope_type = "cluster" 
+    }
+  }
+
 }
