@@ -63,3 +63,8 @@ eks = {
   }
 
 }
+
+ebs_pod_identity = {
+  service_account = "ebs-csi-controller-sa"
+  namespace = "kube-system"
+}
