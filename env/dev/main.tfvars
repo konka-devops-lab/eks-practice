@@ -51,6 +51,7 @@ eks = {
     metrics-server = "v0.8.0-eksbuild.1"
     eks-pod-identity-agent = "v1.3.8-eksbuild.2"
     aws-ebs-csi-driver = "v1.45.0-eksbuild.2"
+    external-dns = "v0.18.0-eksbuild.1"
   }
 
   eks_iam_access = {
@@ -64,7 +65,14 @@ eks = {
 
 }
 
+
+
+# Pod Identities
 ebs_pod_identity = {
   service_account = "ebs-csi-controller-sa"
+  namespace = "kube-system"
+}
+alb_pod_identity = {
+  service_account = "aws-load-balancer-controller"
   namespace = "kube-system"
 }
