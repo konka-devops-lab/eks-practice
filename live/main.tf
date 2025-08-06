@@ -20,14 +20,14 @@ module "eks_cluster" {
 
   bootstrap_cluster_creator_admin_permissions = var.eks["bootstrap_cluster_creator_admin_permissions"]
   eks_version                                 = var.eks["eks_version"]
-  subnet_ids                                  = module.eks-vpc.private_subnet_ids
+  subnet_ids                                  = module.eks-vpc.public_subnet_ids
   security_group_ids                          = [module.control_plane.sg_id]
   endpoint_private_access                     = var.eks["endpoint_private_access"]
   endpoint_public_access                      = var.eks["endpoint_public_access"]
   public_access_cidrs                         = var.eks["public_access_cidrs"]
   node_groups                                 = var.eks["node_groups"]
   node_group_security_group_ids               = [module.node_group.sg_id]
-  node_subnet_ids                             = module.eks-vpc.private_subnet_ids
+  node_subnet_ids                             = module.eks-vpc.public_subnet_ids
   addons                                      = var.eks["addons"]
   eks_iam_access                              = var.eks["eks_iam_access"]
 }

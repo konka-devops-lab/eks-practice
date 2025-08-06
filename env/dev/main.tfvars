@@ -16,7 +16,7 @@ vpc = {
   public_subnet_cidr  = ["172.17.0.0/20", "172.17.16.0/20"]
   private_subnet_cidr = ["172.17.32.0/20", "172.17.48.0/20"]
   db_subnet_cidr      = ["172.17.64.0/20", "172.17.80.0/20"]
-  enable_nat          = true
+  enable_nat          = false
 }
 
 sg = {
@@ -40,8 +40,8 @@ eks = {
     ugl = {
       instance_type = ["t3a.medium"]
       capacity_type = "ON_DEMAND"
-      desired_size  = 2
-      max_size      = 3
+      desired_size  = 6
+      max_size      = 6
       min_size      = 1
     }
   }

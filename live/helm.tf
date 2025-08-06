@@ -56,3 +56,29 @@ resource "helm_release" "aws_lb_controller" {
     }
   ]
 }
+
+
+resource "kubernetes_namespace" "example" {
+  depends_on = [module.eks_cluster, null_resource.kube-config]
+  metadata {
+    name = "instana"
+  }
+}
+
+resource "kubernetes_storage_class" "example" {
+  metadata {
+    name = "instana"
+  }
+
+  storage_provisioner    = "ebs.csi.aws.com"
+  reclaim_policy         = "Delete"
+  allow_volume_expansion = true
+
+  parameters = {
+    type                       = "gp3"
+    encrypted                  = "true"
+    csi.storage.k8s.io/fstype = "xfs"
+  }
+
+  volume_binding_mode = "WaitForFirstConsumer"
+}
