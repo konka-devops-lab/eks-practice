@@ -75,9 +75,9 @@ resource "kubernetes_storage_class" "example" {
   allow_volume_expansion = true
 
   parameters = {
-    type                       = "gp3"
-    encrypted                  = "true"
-    csi.storage.k8s.io/fstype = "xfs"
+    type                        = "gp3"
+    encrypted                   = "true"
+    "csi.storage.k8s.io / fstype" = "xfs"
   }
 
   volume_binding_mode = "WaitForFirstConsumer"
