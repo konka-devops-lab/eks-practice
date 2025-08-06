@@ -60,14 +60,17 @@ resource "helm_release" "aws_lb_controller" {
 
 resource "kubernetes_namespace" "example" {
   depends_on = [module.eks_cluster, null_resource.kube-config]
+  for_each   = toset(var.namespace_names)
   metadata {
-    name = "instana"
+    name = each.key
   }
 }
 
 resource "kubernetes_storage_class" "example" {
+  depends_on = [module.eks_cluster, null_resource.kube-config]
+  for_each   = toset(var.storage_class_names)
   metadata {
-    name = "instana"
+    name = each.key
   }
 
   storage_provisioner    = "ebs.csi.aws.com"
@@ -77,8 +80,16 @@ resource "kubernetes_storage_class" "example" {
   parameters = {
     type                        = "gp3"
     encrypted                   = "true"
-    "csi.storage.k8s.io / fstype" = "xfs"
+    "csi.storage.k8s.io/fstype" = "xfs"
   }
 
   volume_binding_mode = "WaitForFirstConsumer"
+}
+
+variable "storage_class_names" {
+  type = list(string)
+}
+
+variable "namespace_names" {
+  type = list(string)
 }

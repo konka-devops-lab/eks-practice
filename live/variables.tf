@@ -5,3 +5,4 @@ variable "sg" {}
 variable "eks" {}
 variable "ebs_pod_identity" {}
 variable "alb_pod_identity" {}
+variable "external_dns_pod_identity" {}

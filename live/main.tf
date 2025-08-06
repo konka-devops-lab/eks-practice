@@ -54,6 +54,17 @@ module "alb_ingress_pod_identity" {
   pod_identity_role_name = var.alb_pod_identity["service_account"]
 }
 
+module "external_dns_pod_identity" {
+  source                 = "../modules/pod-identities"
+  cluster_name           = module.eks_cluster.name
+  environment            = var.common_vars["environment"]
+  project_name           = var.common_vars["project_name"]
+  policy                 = "${path.module}/../env/${var.common_vars["environment"]}/policies/external_dns_policy.json"
+  namespace              = var.external_dns_pod_identity["namespace"]
+  service_account        = var.external_dns_pod_identity["service_account"]
+  pod_identity_role_name = var.external_dns_pod_identity["service_account"]
+}
+
 # module "admin_user" {
 #   depends_on                     = [module.eks]
 #   source                         = "../modules/ec2"
