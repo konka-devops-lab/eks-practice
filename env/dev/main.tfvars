@@ -76,16 +76,14 @@ alb_pod_identity = {
   service_account = "aws-load-balancer-controller"
   namespace = "kube-system"
 }
-
-alb_pod_identity = {
-  service_account = "aws-load-balancer-controller"
-  namespace = "kube-system"
-}
-
 external_dns_pod_identity = {
   service_account = "external-dns"
   namespace = "external-dns"
 }
 
+loki_pod_identity = {
+  service_account = "loki"
+  namespace = "loki"
+}
 storage_class_names = ["instana","expense","logging"]
 namespace_names = ["expense","logging"]
