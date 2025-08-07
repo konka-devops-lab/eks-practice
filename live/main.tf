@@ -65,16 +65,16 @@ module "external_dns_pod_identity" {
   pod_identity_role_name = var.external_dns_pod_identity["service_account"]
 }
 
-module "loki_pod_identity" {
-  source                 = "../modules/pod-identities"
-  cluster_name           = module.eks_cluster.name
-  environment            = var.common_vars["environment"]
-  project_name           = var.common_vars["project_name"]
-  policy                 = "${path.module}/../env/${var.common_vars["environment"]}/policies/loki_s3_policy.json"
-  namespace              = var.loki_pod_identity["namespace"]
-  service_account        = var.loki_pod_identity["service_account"]
-  pod_identity_role_name = var.loki_pod_identity["service_account"]
-}
+# module "loki_pod_identity" {
+#   source                 = "../modules/pod-identities"
+#   cluster_name           = module.eks_cluster.name
+#   environment            = var.common_vars["environment"]
+#   project_name           = var.common_vars["project_name"]
+#   policy                 = "${path.module}/../env/${var.common_vars["environment"]}/policies/loki_s3_policy.json"
+#   namespace              = var.loki_pod_identity["namespace"]
+#   service_account        = var.loki_pod_identity["service_account"]
+#   pod_identity_role_name = var.loki_pod_identity["service_account"]
+# }
 
 # module "admin_user" {
 #   depends_on                     = [module.eks]

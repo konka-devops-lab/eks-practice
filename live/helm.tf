@@ -6,34 +6,6 @@ resource "null_resource" "kube-config" {
   }
 }
 
-# resource "helm_release" "aws_lb_controller" {
-#   depends_on = [module.eks_cluster, null_resource.kube-config]
-#   name       = "aws-load-balancer-controller"
-#   namespace  = "kube-system"
-#   repository = "https://aws.github.io/eks-charts"
-#   chart      = "aws-load-balancer-controller"
-
-#   set {
-#     name  = "clusterName"
-#     value = module.eks_cluster.name
-#   }
-
-#   # set {
-#   #   name  = "serviceAccount.create"
-#   #   value = "false"
-#   # }
-
-#   set {
-#     name  = "region"
-#     value = var.aws_region
-#   }
-
-#   set {
-#     name  = "vpcId"
-#     value = module.eks-vpc.vpc_id
-#   }
-# }
-
 resource "helm_release" "aws_lb_controller" {
   depends_on = [module.eks_cluster, null_resource.kube-config]
   name       = "aws-load-balancer-controller"
@@ -57,6 +29,49 @@ resource "helm_release" "aws_lb_controller" {
   ]
 }
 
+resource "helm_release" "karpenter" {
+  name             = "karpenter"
+  namespace        = "kube-system"
+  create_namespace = true
+
+  repository = "oci://public.ecr.aws/karpenter"
+  chart      = "karpenter"                     
+  version    = var.karpenter_version
+
+  set {
+    name  = "settings.clusterName"
+    value = module.eks_cluster.name
+  }
+
+  set {
+    name  = "settings.interruptionQueue"
+    value = module.eks_cluster.name
+  }
+
+  set {
+    name  = "controller.resources.requests.cpu"
+    value = "1"
+  }
+
+  set {
+    name  = "controller.resources.requests.memory"
+    value = "1Gi"
+  }
+
+  set {
+    name  = "controller.resources.limits.cpu"
+    value = "1"
+  }
+
+  set {
+    name  = "controller.resources.limits.memory"
+    value = "1Gi"
+  }
+
+  timeout = 600
+  wait    = true
+}
+
 
 resource "kubernetes_namespace" "example" {
   depends_on = [module.eks_cluster, null_resource.kube-config]
@@ -64,6 +79,12 @@ resource "kubernetes_namespace" "example" {
   metadata {
     name = each.key
   }
+  provisioner "local-exec" {
+  command = <<EOT
+  aws eks update-kubeconfig --name dev-eks --region ap-south-1
+  until kubectl get ns; do echo "Waiting for cluster DNS..."; sleep 5; done
+  EOT
+}
 }
 
 resource "kubernetes_storage_class" "example" {
@@ -83,13 +104,14 @@ resource "kubernetes_storage_class" "example" {
     "csi.storage.k8s.io/fstype" = "xfs"
   }
 
+  provisioner "local-exec" {
+  command = <<EOT
+  aws eks update-kubeconfig --name dev-eks --region ap-south-1
+  until kubectl get ns; do echo "Waiting for cluster DNS..."; sleep 5; done
+  EOT
+  }
+
   volume_binding_mode = "WaitForFirstConsumer"
 }
 
-variable "storage_class_names" {
-  type = list(string)
-}
 
-variable "namespace_names" {
-  type = list(string)
-}

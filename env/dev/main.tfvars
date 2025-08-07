@@ -1,4 +1,5 @@
 aws_region = "ap-south-1"
+karpenter_version = "1.6.0"
 common_vars = {
   environment  = "dev"
   project_name = "eks"
@@ -40,8 +41,8 @@ eks = {
     ugl = {
       instance_type = ["t3a.medium"]
       capacity_type = "ON_DEMAND"
-      desired_size  = 6
-      max_size      = 6
+      desired_size  = 2
+      max_size      = 2
       min_size      = 1
     }
   }
@@ -81,9 +82,9 @@ external_dns_pod_identity = {
   namespace = "external-dns"
 }
 
-loki_pod_identity = {
-  service_account = "loki"
-  namespace = "loki"
-}
-storage_class_names = ["instana","expense","logging"]
-namespace_names = ["expense","logging"]
+# loki_pod_identity = {
+#   service_account = "loki"
+#   namespace = "loki"
+# }
+storage_class_names = ["instana","expense","loki"]
+namespace_names = ["instana","expense","loki"]
