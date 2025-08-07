@@ -35,39 +35,35 @@ resource "helm_release" "karpenter" {
   create_namespace = true
 
   repository = "oci://public.ecr.aws/karpenter"
-  chart      = "karpenter"                     
+  chart      = "karpenter"
   version    = var.karpenter_version
 
-  set {
-    name  = "settings.clusterName"
-    value = module.eks_cluster.name
-  }
-
-  set {
-    name  = "settings.interruptionQueue"
-    value = module.eks_cluster.name
-  }
-
-  set {
-    name  = "controller.resources.requests.cpu"
-    value = "1"
-  }
-
-  set {
-    name  = "controller.resources.requests.memory"
-    value = "1Gi"
-  }
-
-  set {
-    name  = "controller.resources.limits.cpu"
-    value = "1"
-  }
-
-  set {
-    name  = "controller.resources.limits.memory"
-    value = "1Gi"
-  }
-
+  set = [
+    {
+      name  = "settings.clusterName"
+      value = module.eks_cluster.name
+    },
+    {
+      name  = "settings.interruptionQueue"
+      value = module.eks_cluster.name
+    },
+    {
+      name  = "controller.resources.requests.cpu"
+      value = "1"
+    },
+    {
+      name  = "controller.resources.requests.memory"
+      value = "1Gi"
+    },
+    {
+      name  = "controller.resources.limits.cpu"
+      value = "1"
+    },
+    {
+      name  = "controller.resources.limits.memory"
+      value = "1Gi"
+    }
+  ]
   timeout = 600
   wait    = true
 }
@@ -80,11 +76,11 @@ resource "kubernetes_namespace" "example" {
     name = each.key
   }
   provisioner "local-exec" {
-  command = <<EOT
+    command = <<EOT
   aws eks update-kubeconfig --name dev-eks --region ap-south-1
   until kubectl get ns; do echo "Waiting for cluster DNS..."; sleep 5; done
   EOT
-}
+  }
 }
 
 resource "kubernetes_storage_class" "example" {
@@ -105,7 +101,7 @@ resource "kubernetes_storage_class" "example" {
   }
 
   provisioner "local-exec" {
-  command = <<EOT
+    command = <<EOT
   aws eks update-kubeconfig --name dev-eks --region ap-south-1
   until kubectl get ns; do echo "Waiting for cluster DNS..."; sleep 5; done
   EOT
