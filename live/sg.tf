@@ -3,25 +3,27 @@ module "control_plane" {
   environment    = var.common_vars["environment"]
   project        = var.common_vars["project_name"]
   common_tags    = var.common_vars["common_tags"]
-  vpc_id         = module.eks-vpc.vpc_id
+  vpc_id         = module.eks_vpc.vpc_id
   sg_name        = var.sg["control_plane_sg_name"]
   sg_description = var.sg["control_plane_sg_description"]
 }
 module "node_group" {
-  source         = "../modules/sg"
-  environment    = var.common_vars["environment"]
-  project        = var.common_vars["project_name"]
-  common_tags    = var.common_vars["common_tags"]
-  vpc_id         = module.eks-vpc.vpc_id
-  sg_name        = var.sg["node_group_sg_name"]
-  sg_description = var.sg["node_group_sg_description"]
+  source                         = "../modules/sg"
+  environment                    = var.common_vars["environment"]
+  project                        = var.common_vars["project_name"]
+  common_tags                    = var.common_vars["common_tags"]
+  vpc_id                         = module.eks_vpc.vpc_id
+  sg_name                        = var.sg["node_group_sg_name"]
+  sg_description                 = var.sg["node_group_sg_description"]
+  enable_karpenter_discovery_tag = var.sg["enable_karpenter_discovery_tag"]
+  karpenter_cluster_name         = module.eks_cluster.name
 }
 module "bastion" {
   source         = "../modules/sg"
   environment    = var.common_vars["environment"]
   project        = var.common_vars["project_name"]
   common_tags    = var.common_vars["common_tags"]
-  vpc_id         = module.eks-vpc.vpc_id
+  vpc_id         = module.eks_vpc.vpc_id
   sg_name        = var.sg["bastion_sg_name"]
   sg_description = var.sg["bastion_sg_description"]
 }
@@ -30,7 +32,7 @@ module "alb" {
   environment    = var.common_vars["environment"]
   project        = var.common_vars["project_name"]
   common_tags    = var.common_vars["common_tags"]
-  vpc_id         = module.eks-vpc.vpc_id
+  vpc_id         = module.eks_vpc.vpc_id
   sg_name        = var.sg["alb_sg_name"]
   sg_description = var.sg["alb_sg_description"]
 }

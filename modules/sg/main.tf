@@ -27,6 +27,9 @@ resource "aws_security_group" "asg" {
   tags = merge({
     Name = local.name
   },
-  var.common_tags
+  var.common_tags,
+  var.enable_karpenter_discovery_tag ? {
+    "karpenter.sh/discovery" = var.karpenter_cluster_name
+  } : {}
   )
 }

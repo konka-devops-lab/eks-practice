@@ -1,5 +1,5 @@
 aws_region = "ap-south-1"
-karpenter_version = "1.6.0"
+# karpenter_version = "1.6.0"
 common_vars = {
   environment  = "dev"
   project_name = "eks"
@@ -17,12 +17,13 @@ vpc = {
   public_subnet_cidr  = ["172.17.0.0/20", "172.17.16.0/20"]
   private_subnet_cidr = ["172.17.32.0/20", "172.17.48.0/20"]
   db_subnet_cidr      = ["172.17.64.0/20", "172.17.80.0/20"]
-  enable_nat          = false
+  enable_nat          = true
 }
 
 sg = {
   control_plane_sg_name        = "control-plane-sg"
   control_plane_sg_description = "Security group for the control plane"
+  enable_karpenter_discovery_tag = true
   node_group_sg_name           = "node-group-sg"
   node_group_sg_description    = "Security group for the node group"
   bastion_sg_name              = "bastion-sg"
@@ -82,9 +83,14 @@ external_dns_pod_identity = {
   namespace = "external-dns"
 }
 
+karpenter_pod_identity = {
+  service_account = "karpenter"
+  namespace = "kube-system"
+}
+
 # loki_pod_identity = {
 #   service_account = "loki"
 #   namespace = "loki"
 # }
-storage_class_names = ["instana","expense","loki"]
-namespace_names = ["instana","expense","loki"]
+storage_class_names = ["instana","expense"]
+namespace_names = ["instana","expense"]

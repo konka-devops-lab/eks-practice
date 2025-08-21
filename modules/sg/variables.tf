@@ -39,3 +39,15 @@ variable "ingress_rules" {
   default = []
   
 }
+
+variable "enable_karpenter_discovery_tag" {
+  description = "Flag to enable Karpenter discovery tag"
+  type        = bool
+  default     = false
+}
+
+variable "karpenter_cluster_name" {
+  description = "Name of the Karpenter cluster for discovery tag"
+  type        = string
+  default     = ""
+}

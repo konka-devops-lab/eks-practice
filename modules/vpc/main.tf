@@ -43,7 +43,7 @@ resource "aws_subnet" "public" {
       Name                                                      = "${local.name}-public-subnet-${split("-", var.azs[count.index])[2]}"
       "kubernetes.io/cluster/${var.environment}-${var.project}" = "owned"
       "kubernetes.io/role/elb"                                  = 1
-      "karpenter.sh/discovery"                                  = "${var.environment}-${var.project}"
+      # "karpenter.sh/discovery"                                  = "${var.environment}-${var.project}"
     },
     var.common_tags
   )
