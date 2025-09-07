@@ -38,7 +38,7 @@ jobs:
           path: live/tfplan.out
 
   apply:
-    runs-on: [self-hosted, terraform]
+    runs-on: [self-hosted]
     needs: plan
     environment: ${{ github.event.inputs.environment }}
     defaults:
