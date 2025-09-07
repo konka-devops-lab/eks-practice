@@ -100,15 +100,15 @@ resource "helm_release" "aws_lb_controller" {
 #   depends_on = [module.eks_cluster]
 # }
 # ############################################# Kube Prometheus Stack ##########################################################
-resource "helm_release" "kube_prometheus_stack" {
-  name             = "kube-prometheus-stack"
-  repository       = "oci://ghcr.io/prometheus-community/charts"
-  chart            = "kube-prometheus-stack"
-  namespace        = "monitoring"
-  create_namespace = true
-  version          = "76.5.1"
-  depends_on       = [module.eks_cluster]
-}
+# resource "helm_release" "kube_prometheus_stack" {
+#   name             = "kube-prometheus-stack"
+#   repository       = "oci://ghcr.io/prometheus-community/charts"
+#   chart            = "kube-prometheus-stack"
+#   namespace        = "monitoring"
+#   create_namespace = true
+#   version          = "76.5.1"
+#   depends_on       = [module.eks_cluster]
+# }
 ############################################# EC2NoodeClass & NodePool #######################################################
 # resource "kubernetes_manifest" "karpenter_ec2_nodeclass" {
 #   manifest = {

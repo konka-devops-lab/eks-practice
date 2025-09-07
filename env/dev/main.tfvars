@@ -62,6 +62,12 @@ eks = {
       policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
       kubernetes_groups = []
       access_scope_type = "cluster" 
+    },
+    siva = {
+      principal_arn     = "arn:aws:iam::384570460482:user/practice"
+      policy_arn        = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
+      kubernetes_groups = []
+      access_scope_type = "cluster" 
     }
   }
 
