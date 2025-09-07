@@ -72,9 +72,6 @@ eks = {
   }
 
 }
-
-
-
 # Pod Identities
 ebs_pod_identity = {
   service_account = "ebs-csi-controller-sa"
