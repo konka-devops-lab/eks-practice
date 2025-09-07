@@ -14,10 +14,10 @@ variable "external_dns_pod_identity" {}
 #   description = "Version of Karpenter Helm chart"
 # }
 
-variable "storage_class_names" {
-  type = list(string)
-}
+# variable "storage_class_names" {
+#   type = list(string)
+# }
 
-variable "namespace_names" {
-  type = list(string)
-}
+# variable "namespace_names" {
+#   type = list(string)
+# }

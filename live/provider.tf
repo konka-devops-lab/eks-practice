@@ -13,8 +13,7 @@ terraform {
 }
 
 provider "aws" {
-  region  = var.aws_region
-  profile = "eks-siva.bapatlas.site"
+  region = var.aws_region
 }
 
 provider "kubernetes" {

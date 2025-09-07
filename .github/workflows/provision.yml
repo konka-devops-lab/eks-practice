@@ -1,0 +1,62 @@
+name: Terraform Provision
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose environment (dev/prod)"
+        required: true
+        default: dev
+
+jobs:
+  plan:
+    runs-on: [self-hosted]
+    defaults:
+      run:
+        working-directory: ./live
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Terraform Init
+        run: terraform init -backend-config=../env/${{ github.event.inputs.environment }}/backend.tfvars
+
+      - name: Terraform Format
+        run: terraform fmt -recursive
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -var-file=../env/${{ github.event.inputs.environment }}/main.tfvars -out=tfplan.out
+
+      - name: Upload Plan Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: live/tfplan.out
+
+  apply:
+    runs-on: [self-hosted, terraform]
+    needs: plan
+    environment: ${{ github.event.inputs.environment }}
+    defaults:
+      run:
+        working-directory: ./live
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Download Plan Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tfplan
+          path: live
+
+      - name: Terraform Init
+        run: terraform init -backend-config=../env/${{ github.event.inputs.environment }}/backend.tfvars
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan.out

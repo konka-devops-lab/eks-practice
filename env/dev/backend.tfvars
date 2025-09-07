@@ -1,3 +1,3 @@
-bucket = "konka-backend-mumbai"
-key    = "dev/eks-practice/mumbai/terraform/state"
-region = "ap-south-1"
+bucket = "ugl-tf-projects"
+key    = "dev/eks-practice/terraform/state"
+region = "us-east-1"

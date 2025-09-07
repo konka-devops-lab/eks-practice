@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🌍 Choose the environment to destroy:"
+echo "🌍 Choose the environment to provision:"
 echo "1. dev"
 echo "2. prod"
 

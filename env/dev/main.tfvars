@@ -13,11 +13,11 @@ common_vars = {
 
 vpc = {
   vpc_cidr            = "172.17.0.0/16"
-  azs                 = ["ap-south-1a", "ap-south-1b"]
+  azs                 = ["us-east-1a", "us-east-1b"]
   public_subnet_cidr  = ["172.17.0.0/20", "172.17.16.0/20"]
   private_subnet_cidr = ["172.17.32.0/20", "172.17.48.0/20"]
   db_subnet_cidr      = ["172.17.64.0/20", "172.17.80.0/20"]
-  enable_nat          = true
+  enable_nat          = false
 }
 
 sg = {
@@ -40,11 +40,11 @@ eks = {
   public_access_cidrs                         = ["0.0.0.0/0"]
   node_groups = {
     ugl = {
-      instance_type = ["t3a.medium"]
-      capacity_type = "ON_DEMAND"
+      instance_type = ["t3a.xlarge"]
+      capacity_type = "spot"
       desired_size  = 2
       max_size      = 2
-      min_size      = 1
+      min_size      = 2
     }
   }
 
@@ -92,5 +92,3 @@ karpenter_pod_identity = {
 #   service_account = "loki"
 #   namespace = "loki"
 # }
-storage_class_names = ["instana","expense"]
-namespace_names = ["instana","expense"]

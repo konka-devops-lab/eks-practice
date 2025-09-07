@@ -20,14 +20,14 @@ module "eks_cluster" {
 
   bootstrap_cluster_creator_admin_permissions = var.eks["bootstrap_cluster_creator_admin_permissions"]
   eks_version                                 = var.eks["eks_version"]
-  subnet_ids                                  = module.eks_vpc.private_subnet_ids
+  subnet_ids                                  = module.eks_vpc.public_subnet_ids
   security_group_ids                          = [module.control_plane.sg_id]
   endpoint_private_access                     = var.eks["endpoint_private_access"]
   endpoint_public_access                      = var.eks["endpoint_public_access"]
   public_access_cidrs                         = var.eks["public_access_cidrs"]
   node_groups                                 = var.eks["node_groups"]
   node_group_security_group_ids               = [module.node_group.sg_id]
-  node_subnet_ids                             = module.eks_vpc.private_subnet_ids
+  node_subnet_ids                             = module.eks_vpc.public_subnet_ids
   addons                                      = var.eks["addons"]
   eks_iam_access                              = var.eks["eks_iam_access"]
   depends_on                                  = [module.eks_vpc]
@@ -44,16 +44,16 @@ module "ebs_pod_identity" {
   pod_identity_role_name = var.ebs_pod_identity["service_account"]
 }
 
-module "alb_ingress_pod_identity" {
-  source                 = "../modules/pod-identities"
-  cluster_name           = module.eks_cluster.name
-  environment            = var.common_vars["environment"]
-  project_name           = var.common_vars["project_name"]
-  policy                 = "${path.module}/../env/${var.common_vars["environment"]}/policies/alb_ingress_policy.json"
-  namespace              = var.alb_pod_identity["namespace"]
-  service_account        = var.alb_pod_identity["service_account"]
-  pod_identity_role_name = var.alb_pod_identity["service_account"]
-}
+# module "alb_ingress_pod_identity" {
+#   source                 = "../modules/pod-identities"
+#   cluster_name           = module.eks_cluster.name
+#   environment            = var.common_vars["environment"]
+#   project_name           = var.common_vars["project_name"]
+#   policy                 = "${path.module}/../env/${var.common_vars["environment"]}/policies/alb_ingress_policy.json"
+#   namespace              = var.alb_pod_identity["namespace"]
+#   service_account        = var.alb_pod_identity["service_account"]
+#   pod_identity_role_name = var.alb_pod_identity["service_account"]
+# }
 
 module "external_dns_pod_identity" {
   source                 = "../modules/pod-identities"
@@ -67,7 +67,16 @@ module "external_dns_pod_identity" {
 }
 
 
+# module "karpenter" {
+#   source = "terraform-aws-modules/eks/aws//modules/karpenter"
 
+#   cluster_name = module.eks_cluster.name
+#   # Attach additional IAM policies to the Karpenter node IAM role
+#   node_iam_role_additional_policies = {
+#     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+#   }
+#   depends_on = [module.eks_cluster]
+# }
 
 
 
